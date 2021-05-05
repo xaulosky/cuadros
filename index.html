@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crea tu cuadro</title>
+    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+
+
+
+
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script src="html2canvas.js">
+    </script>
+
+
+</head>
+
+<body>
+    <div id="app">
+        <div id="menu">
+            <a id="m-plantillas" class="centro" href="#">
+                <svg id="m-plantillas" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="currentColor" fill-rule="evenodd"
+                        d="M19.5 10V5a.5.5 0 0 0-.5-.5h-4.5V10h5zm0 1.5h-5v8H19a.5.5 0 0 0 .5-.5v-7.5zm-6.5-7H5a.5.5 0 0 0-.5.5v14c0 .28.22.5.5.5h8v-15zM5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2z">
+                    </path>
+
+                </svg> Plantillas
+            </a>
+            <a id="m-textos" class="centro" href="#">
+                <svg id="m-textos" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="currentColor" fill-rule="evenodd"
+                        d="M18 5.5h-5.25V18c0 .28.22.5.5.5h2a.75.75 0 1 1 0 1.5h-6.5a.75.75 0 1 1 0-1.5h2a.5.5 0 0 0 .5-.5V5.5H6a.5.5 0 0 0-.5.5v1.25a.75.75 0 0 1-1.5 0V5.5C4 4.67 4.67 4 5.5 4h13c.83 0 1.5.67 1.5 1.5v1.75a.75.75 0 1 1-1.5 0V6a.5.5 0 0 0-.5-.5z">
+                    </path>
+                </svg> Texto
+            </a>
+            <a id="m-imagenes" class="centro" href="#">
+
+                <svg id="m-imagenes" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="currentColor"
+                        d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2zm0 1.5a.5.5 0 0 0-.5.5v14c0 .28.22.5.5.5h14a.5.5 0 0 0 .5-.5V5a.5.5 0 0 0-.5-.5H5zm5.75 10.1l3.05-4.15a2 2 0 0 1 3.22-.01L21 15.78V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-.09l3.82-5.25a2 2 0 0 1 3.22 0l.7.95zm3.6 4.9H19a.5.5 0 0 0 .5-.5v-2.72l-3.69-4.94a.5.5 0 0 0-.8 0l-3.33 4.53 2.68 3.63zm-5.51-4.96a.5.5 0 0 0-.81 0l-3.44 4.74a.5.5 0 0 0 .41.22h7.5l-3.66-4.96zM8.5 10a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z">
+                    </path>
+                </svg> Fotos
+            </a>
+        </div>
+        <div id="left">
+
+        </div>
+        <div id="right">
+            <div id="plantilla">
+                <div id="cuadro">
+                </div>
+                <div id="cuadro-textos"></div>
+            </div>
+
+            <button id="boton-descarga">Descargar Cuadro</button>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+
+    <script>
+        // function test() {
+        //     html2canvas(document.querySelector("#plantilla")).then(canvas => {
+        //         document.body.appendChild(canvas)
+        //     });
+        // }
+        function downloadCanvas(canvasId, filename) {
+            // Obteniendo la etiqueta la cual se desea convertir en imagen
+            var domElement = document.getElementById(canvasId);
+
+            // Utilizando la función html2canvas para hacer la conversión
+            html2canvas(domElement, {
+                onrendered: function(domElementCanvas) {
+                    // Obteniendo el contexto del canvas ya generado
+                    var context = domElementCanvas.getContext('2d');
+
+                    // Creando enlace para descargar la imagen generada
+                    var link = document.createElement('a');
+                    link.href = domElementCanvas.toDataURL("image/png");
+                    link.download = filename;
+
+                    // Chequeando para browsers más viejos
+                    if (document.createEvent) {
+                        var event = document.createEvent('MouseEvents');
+                        // Simulando clic para descargar
+                        event.initMouseEvent("click", true, true, window, 0,
+                            0, 0, 0, 0,
+                            false, false, false, false,
+                            0, null);
+                        link.dispatchEvent(event);
+                    } else {
+                        // Simulando clic para descargar
+                        link.click();
+                    }
+                }
+            });
+        }
+
+        // Haciendo la conversión y descarga de la imagen al presionar el botón
+        $('#boton-descarga').click(function() {
+
+            // $("#tituloGuardado").addClass("grande");
+            // $("#cuadro").addClass("grande");
+            // $(".imagen-cuadro").addClass("grande");
+            $("#plantilla").addClass("grande");
+            // $("#file-preview").addClass("grande");
+            $("#app").addClass("grande");
+            document.querySelector("#cuadro-textos").style.transform = "scale(4)";
+
+            // document.querySelector("#file-preview").style.width = `${document.querySelector("#file-preview").width*2}px`;
+            // $(".imagen-cuadro").addClass("grande");
+            downloadCanvas('plantilla', 'imagen.png');
+            document.querySelector("#cuadro-textos").style.transform = "scale(1)";
+
+            // document.querySelector("#file-preview").style.transform = "scale(1)";
+            // $("#cuadro").removeClass("grande");
+            // $(".imagen-cuadro").removeClass("grande");
+            $("#plantilla").removeClass("grande");
+            // $(".imagen-cuadro").removeClass("grande");
+
+            $("#app").removeClass("grande");
+
+
+            // $("#tituloGuardado").removeClass("grande");
+
+        });
+    </script>
+
+
+    <script>
+    </script>
+</body>
+
+</html>
+
+</html>
